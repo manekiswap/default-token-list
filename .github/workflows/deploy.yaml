@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Tests
+      - name: Test
         run: yarn test
 
       # - name: Publish to NPM
@@ -36,10 +36,11 @@ jobs:
         uses: aquiladev/ipfs-action@master
         id: upload
         with:
-          path: './build/manekiswap-default.tokenlist.json'
+          path: './build'
+          service: pinata
           pinataKey: ${{ secrets.PINATA_KEY }}
           pinataSecret: ${{ secrets.PINATA_SECRET }}
-          pinataPinName: Manekiswap Default Token List ${{ needs.bump_version.outputs.new_tag }}
+          pinataPinName: Manekiswap Token List ${{ github.sha }}
 
       - name: Update DNS with new IPFS hash
         env:

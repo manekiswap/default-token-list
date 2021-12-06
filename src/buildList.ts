@@ -1,15 +1,11 @@
-const { version } = require("../package.json");
-const mainnet = require("./tokens/mainnet.json");
-const goerli = require("./tokens/goerli.json");
-const kovan = require("./tokens/kovan.json");
-const matic = require("./tokens/matic.json");
-const rinkeby = require("./tokens/rinkeby.json");
-const ropsten = require("./tokens/ropsten.json");
+import { TokenInfo } from "@manekiswap/token-lists";
 
-module.exports = function buildList() {
+const { version } = require("../package.json");
+
+export function buildList(name: string, list: TokenInfo[]) {
   const parsed = version.split(".");
   return {
-    name: "Manekiswap List",
+    name,
     timestamp: new Date().toISOString(),
     version: {
       major: +parsed[0],
@@ -19,7 +15,7 @@ module.exports = function buildList() {
     tags: {},
     logoURI: "ipfs://Qmc1xbWhECo1FDW9QUfdayFL5nfbgi7PKtatjXMgAc2XcT",
     keywords: ["manekiswap", "default"],
-    tokens: [...mainnet, ...goerli, ...kovan, ...matic, ...ropsten, ...rinkeby]
+    tokens: list
       // sort them by symbol for easy readability
       .sort((t1, t2) => {
         if (t1.chainId === t2.chainId) {
@@ -28,4 +24,4 @@ module.exports = function buildList() {
         return t1.chainId < t2.chainId ? -1 : 1;
       }),
   };
-};
+}
